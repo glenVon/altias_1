@@ -66,6 +66,7 @@ class ControlTest {
         assertEquals(testUser, response.getBody());
     }
 
+
     @Test
     void getAllUsers_Success() {
         List<User> users = Arrays.asList(testUser);
