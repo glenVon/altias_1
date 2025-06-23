@@ -75,7 +75,7 @@ class ServicioUsuarioTest {
 
     @Test
     void login_Success() {
-        when(userRepository.findByNombreUsuarioAndPassword("jdoe", "1234"))
+        when(userRepository.findByNombreUsuarioAndPassword("admin", "1234"))
             .thenReturn(testUser);
 
         ResponseEntity<?> response = servicioUsuario.login(testUser);

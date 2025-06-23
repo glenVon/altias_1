@@ -34,6 +34,13 @@ public class User {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setFecha_nacimiento'");
     }
+    public User(String string, String string2, String string3, String string4, String string5, String string6,
+            String string7) {
+        //TODO Auto-generated constructor stub
+    }
+    public User() {
+        //TODO Auto-generated constructor stub
+    }
 
     
 

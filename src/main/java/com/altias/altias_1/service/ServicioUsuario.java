@@ -80,6 +80,13 @@ public class ServicioUsuario {
         }
     }
 
+    public Object crearUsuario(User any) {
+        Object user = null;
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
+        
+    }
+
 
 
 

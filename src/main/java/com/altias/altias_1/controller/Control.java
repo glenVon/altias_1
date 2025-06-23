@@ -69,4 +69,9 @@ public class Control {
         return ServicioUsuario.login(user);
     }
 
+    public ResponseEntity<String> crearUsuario(User newUser) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'crearUsuario'");
+    }
+
 }
