@@ -53,7 +53,7 @@ public class ServicioUsuario {
             userResponse.setApellido_paterno(user.getApellido_paterno());
             userResponse.setApellido_materno(user.getApellido_materno());
             userResponse.setEmail(user.getEmail());
-            userResponse.setFecha_nacimiento(user.getFecha_nacimiento());
+            //userResponse.setFecha_nacimiento(user.getFecha_nacimiento());
             userResponse.setId(user.getId());
             return ResponseEntity.ok(userResponse);
         } else {
@@ -80,11 +80,9 @@ public class ServicioUsuario {
         }
     }
 
-    public Object crearUsuario(User any) {
-        Object user = null;
+    public ResponseEntity<User> crearUsuario(User user) {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
-        
     }
 
 

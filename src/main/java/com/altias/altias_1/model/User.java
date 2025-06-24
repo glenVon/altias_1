@@ -25,22 +25,8 @@ public class User {
     private String apellido_paterno;
     private String apellido_materno;
     private String email;
-    private LocalDate fecha_nacimiento;
-    public void setFecha_nacimiento(String string) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFecha_nacimiento'");
-    }
-    public void setFecha_nacimiento(LocalDate fecha_nacimiento2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFecha_nacimiento'");
-    }
-    public User(String string, String string2, String string3, String string4, String string5, String string6,
-            String string7) {
-        //TODO Auto-generated constructor stub
-    }
-    public User() {
-        //TODO Auto-generated constructor stub
-    }
+    //private LocalDate fecha_nacimiento;
+    
 
     
 
