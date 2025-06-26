@@ -9,10 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import jakarta.persistence.GenerationType;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Entity
 @Data
 @Table(name = "user")
+@Schema(description = "Modelo que representa un usuario del sistema")
 public class User {
 
     @Id

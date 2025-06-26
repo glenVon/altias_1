@@ -1,5 +1,6 @@
 package com.altias.altias_1.service;
 
+import com.altias.altias_1.controller.Usuario;
 import com.altias.altias_1.model.User;
 //import com.altias.mic_autenticacion.model.usuario;
 import com.altias.altias_1.repository.UserRepository;
@@ -31,7 +32,7 @@ public class ServicioUsuario {
         }
     }
 
-    public ResponseEntity<User> createUser(User user) {
+    public ResponseEntity<User> createUser(User user, User user2) {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
         
@@ -80,9 +81,19 @@ public class ServicioUsuario {
         }
     }
 
-    public ResponseEntity<User> crearUsuario(User user) {
+    public ResponseEntity<User> crearUsuario(Usuario user) {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    public ResponseEntity<User> createUser(User user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+    }
+
+    public Object crearUsuario(User any) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'crearUsuario'");
     }
 
 
