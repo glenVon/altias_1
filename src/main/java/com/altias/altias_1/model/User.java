@@ -12,14 +12,17 @@ import jakarta.persistence.GenerationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+
 @Entity
 @Data
 //@Table(Object username = "user")
 @Schema(description = "Modelo que representa un usuario del sistema")
+
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Long id;
 
     private String nombre;

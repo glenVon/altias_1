@@ -305,14 +305,14 @@ public class ControladorTest {
 
     @Test
     void testObtenerTodosUsuarios() throws Exception {
-        // 1. Configura el mock
+        
         List<User> usuarios = List.of(usuarioDePrueba);
         when(ServicioUsuario.getAllUsers())
             .thenReturn(ResponseEntity.ok(usuarios));
         
-        // 2. Ejecuta y verifica la petición HTTP
+        
         mockMvc.perform(get("/api/v1/users/listar"))
-               //.andDo(print()) // Opcional: muestra detalles de la petición/respuesta
+               
                .andExpect(status().isOk())
                .andExpect(jsonPath("$[0].id").value(1L))
                .andExpect(jsonPath("$[0].nombre").value("Juan"));
@@ -321,14 +321,14 @@ public class ControladorTest {
 
     @Test
     void testObtenerUsuarioPorId() throws Exception {
-    // 1. Configura el comportamiento del mock
+    
     when(ServicioUsuario.getUserById(1L))
         .thenReturn(ResponseEntity.ok(usuarioDePrueba));
 
-    // 2. Ejecuta la petición HTTP simulada
+    
     mockMvc.perform(get("/api/v1/users/usuarioPorId/{id}", 1L)
            .contentType(MediaType.APPLICATION_JSON))
-           //.andDo(print())  // Opcional: para ver detalles del request/response
+           
            .andExpect(status().isOk())
            .andExpect(jsonPath("$.id").value(1L))
            .andExpect(jsonPath("$.nombre").value("Juan"));
@@ -336,30 +336,17 @@ public class ControladorTest {
 
     @Test
     void testEliminarUsuario() throws Exception {
-    // 1. Configura el comportamiento esperado del mock
+    
     when(ServicioUsuario.deleteUser(1L))
         .thenReturn(ResponseEntity.ok("Usuario con ID 1 eliminado"));
 
-    // 2. Ejecuta la petición HTTP simulada
+    
     mockMvc.perform(delete("/api/v1/users/eliminar/{id}", 1L)
            .contentType(MediaType.APPLICATION_JSON))
            //.andDo(print())  // Opcional: muestra detalles de la petición/respuesta
            .andExpect(status().isOk())
            .andExpect(content().string("Usuario con ID 1 eliminado"));
-}
-
-    // @Test
-    // void testLogin() {
-    //     // Given: Configuración inicial
-    //     when(ServicioUsuario.authenticatedUser(usuarioDePrueba)).thenReturn((ResponseEntity<?>) ResponseEntity.ok(usuarioDePrueba));
-
-    //     // When: Ejecución del método a testear
-    //     ResponseEntity<?> response = control.login(usuarioDePrueba);
-
-    //     // Then: Verificaciones
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals(usuarioDePrueba, response.getBody());
-    // }
+    }
 
     @Test
     void testSimple() {

@@ -38,7 +38,7 @@ public class Control {
     //http://localhost:8080/api/v1/users/login (en POSTMAN)
     //{"nombreUsuario":"admin","password":"1234"}
     public ResponseEntity<?> login(@RequestBody User user) {
-        return ServicioUsuario.authenticatedUser(user);
+        return ServicioUsuario.login(user);
     }
 
     @Operation(summary = "Crear usuario", description = "Registra un nuevo usuario en el sistema")
@@ -91,8 +91,5 @@ public class Control {
         user.setPassword(password);
         return ServicioUsuario.login(user);
     }
-
-    
-    
 
 }
