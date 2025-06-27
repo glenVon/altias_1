@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Data
-@Table(name = "user")
+//@Table(Object username = "user")
 @Schema(description = "Modelo que representa un usuario del sistema")
 public class User {
 
@@ -28,7 +28,7 @@ public class User {
     private String apellido_paterno;
     private String apellido_materno;
     private String email;
-    //private LocalDate fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
     
 
     

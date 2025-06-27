@@ -65,7 +65,7 @@ public class Control {
     @GetMapping("/usuarioPorId/{id}")
     //http://localhost:8080/api/v1/users/usuarioPorId/1 (en POSTMAN)
     //retorna un usuario por su id
-    public ResponseEntity<User> getUserById(@RequestParam Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ServicioUsuario.getUserById(id);
     }
 
@@ -92,10 +92,7 @@ public class Control {
         return ServicioUsuario.login(user);
     }
 
-    public ResponseEntity<User> crearUsuario(User newUser) {
-        return ServicioUsuario.createUser(newUser);
-        
-    }
+    
     
 
 }

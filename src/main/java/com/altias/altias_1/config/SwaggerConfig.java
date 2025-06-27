@@ -11,13 +11,16 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        String bd_altias = "Base de Datos Altias";
         return new OpenAPI()
                 .info(new Info()
-                        .title("API de Usuarios")
+                        .title("API del Demonio")
                         .version("1.0")
-                        .description("API para la gestión de usuarios del sistema Altias")
+                        .description("API para la gestión de usuarios del sistema Altias" + bd_altias)
                         .contact(new Contact()
                                 .name("Equipo de Desarrollo")
                                 .email("soporte@altias.com")));
     }
+
+    
 }
