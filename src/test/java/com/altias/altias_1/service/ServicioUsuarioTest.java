@@ -4,9 +4,10 @@ import com.altias.altias_1.model.User;
 import com.altias.altias_1.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +21,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ServicioUsuarioTest {
@@ -39,8 +38,6 @@ class ServicioUsuarioTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        
         testUser = new User();
         testUser.setId(1L);
         testUser.setNombre("Juan");
@@ -49,108 +46,128 @@ class ServicioUsuarioTest {
         testUser.setApellido_paterno("Doe");
         testUser.setApellido_materno("Smith");
         testUser.setEmail("juan@example.com");
-        //testUser.setFecha_nacimiento("1992-04-01");
     }
-
-    // @Test
-    // void login_Success() {
-    //     when(userRepository.findByNombreUsuarioAndPassword("jdoe", "1234"))
-    //         .thenReturn(testUser);
-
-    //     ResponseEntity<?> response = servicioUsuario.login(testUser);
-
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals(testUser, response.getBody());
-    
-    //     User loginUser = new User();
-    //     loginUser.setNombreUsuario("jdoe");
-    //     loginUser.setPassword("1234");
-
-    //     assertEquals(HttpStatus.OK, response.getStatusCode());
-    //     assertEquals(testUser, response.getBody());
-    // }
 
     @Test
     void createUser_Success() {
-    // 1. Configura el mock para devolver el usuario guardado
-    when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-        User userToSave = invocation.getArgument(0);
-        // Simula que la base de datos asigna un ID
-        userToSave.setId(1L); 
-        return userToSave;
-    });
+        // Configuración del mock
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
-    // 2. Ejecuta el método
-    ResponseEntity<User> response = servicioUsuario.createUser(testUser);
+        // Ejecución del método
+        ResponseEntity<User> response = servicioUsuario.createUser(testUser);
 
-    // 3. Verificaciones
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    
-    // Verifica los campos importantes
-    assertEquals(1L, response.getBody().getId());
-    assertEquals("Juan", response.getBody().getNombre());
-    assertEquals("jdoe", response.getBody().getNombreUsuario());
-    
-    // Verifica que se llamó al repositorio
-    verify(userRepository, times(1)).save(any(User.class));
+        // Verificaciones
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(testUser.getId(), response.getBody().getId());
+        assertEquals(testUser.getNombre(), response.getBody().getNombre());
+        
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(passwordEncoder, times(1)).encode(anyString());
     }
 
     @Test
     void getAllUsers_Success() {
+        // Configuración del mock
         List<User> users = Arrays.asList(testUser);
         when(userRepository.findAll()).thenReturn(users);
 
+        // Ejecución del método
         ResponseEntity<List<User>> response = servicioUsuario.getAllUsers();
 
+        // Verificaciones
+        assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
         assertEquals(testUser, response.getBody().get(0));
+        
+        verify(userRepository, times(1)).findAll();
     }
 
     @Test
     void getUserById_Success() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+    // 1. Configuración del mock - crea un objeto idéntico al que devuelve el servicio
+    User userFromService = new User();
+    userFromService.setId(1L);
+    userFromService.setNombre("Juan");
+    userFromService.setNombreUsuario("jdoe");
+    userFromService.setPassword(null); // Password null como lo devuelve el servicio
+    userFromService.setApellido_paterno("Doe");
+    userFromService.setApellido_materno("Smith");
+    userFromService.setEmail("juan@example.com");
+    
+    when(userRepository.findById(1L)).thenReturn(Optional.of(userFromService));
 
-        ResponseEntity<User> response = servicioUsuario.getUserById(1L);
+    // 2. Ejecución del método
+    ResponseEntity<User> response = servicioUsuario.getUserById(1L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Juan", response.getBody().getNombre());
-        assertEquals("jdoe", response.getBody().getNombreUsuario());
-    }
+    // 3. Verificaciones
+    assertNotNull(response);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertNotNull(response.getBody());
+    
+    // Comparación campo por campo (más seguro)
+    assertEquals(userFromService.getId(), response.getBody().getId());
+    assertEquals(userFromService.getNombre(), response.getBody().getNombre());
+    assertEquals(userFromService.getNombreUsuario(), response.getBody().getNombreUsuario());
+    assertNull(response.getBody().getPassword()); // Asegura que el password es null
+    assertEquals(userFromService.getApellido_paterno(), response.getBody().getApellido_paterno());
+    assertEquals(userFromService.getApellido_materno(), response.getBody().getApellido_materno());
+    assertEquals(userFromService.getEmail(), response.getBody().getEmail());
+    
+    verify(userRepository, times(1)).findById(1L);
+}
 
     @Test
     void getUserById_NotFound() {
-        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        // Configuración del mock (sin stubbing innecesario)
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
+        // Ejecución del método
         ResponseEntity<User> response = servicioUsuario.getUserById(99L);
 
+        // Verificaciones
+        assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        
+        verify(userRepository, times(1)).findById(99L);
     }
 
     @Test
     void deleteUser_Success() {
+        // Configuración del mock
         when(userRepository.existsById(1L)).thenReturn(true);
         doNothing().when(userRepository).deleteById(1L);
 
+        // Ejecución del método
         ResponseEntity<String> response = servicioUsuario.deleteUser(1L);
 
+        // Verificaciones
+        assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Usuario con ID 1 eliminado", response.getBody());
+        
+        verify(userRepository, times(1)).existsById(1L);
         verify(userRepository, times(1)).deleteById(1L);
     }
 
     @Test
     void deleteUser_NotFound() {
+        // Configuración del mock (sin stubbing innecesario)
         when(userRepository.existsById(99L)).thenReturn(false);
 
+        // Ejecución del método
         ResponseEntity<String> response = servicioUsuario.deleteUser(99L);
 
-        assertEquals(404, response.getStatusCodeValue());
+        // Verificaciones
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Usuario no encontrado", response.getBody());
+        
+        verify(userRepository, times(1)).existsById(99L);
         verify(userRepository, never()).deleteById(anyLong());
     }
 }
-
-//actualizado

@@ -3,6 +3,8 @@ package com.altias.altias_1.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Data
+@JsonFormat(pattern = "yyyy-MM-dd")
 //@Table(Object username = "user")
 @Schema(description = "Modelo que representa un usuario del sistema")
 
@@ -32,6 +35,7 @@ public class User {
     private String apellido_materno;
     private String email;
     private LocalDate fecha_nacimiento;
+
     
 
     

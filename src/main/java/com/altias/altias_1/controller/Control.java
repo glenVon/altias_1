@@ -25,6 +25,7 @@ public class Control {
 
     private final ServicioUsuario ServicioUsuario;
     
+    
 
     @Autowired
     public Control(ServicioUsuario servicioUsuario) {
